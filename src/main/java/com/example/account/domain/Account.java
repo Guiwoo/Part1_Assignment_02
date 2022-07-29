@@ -23,11 +23,11 @@ public class Account {
 
     @ManyToOne
     private AccountUser accountUser;
+    private String accountNumber;
 
     @Enumerated(EnumType.STRING)
     private AccountStatus accountStatus;
 
-    private String accountNumber;
 
     private Long balance;
 
