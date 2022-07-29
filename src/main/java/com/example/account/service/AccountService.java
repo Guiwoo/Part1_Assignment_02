@@ -14,9 +14,12 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static com.example.account.type.AccountStatus.*;
+import static com.example.account.type.ErrorCode.USER_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +36,7 @@ public class AccountService {
     public AccountDto createAccount(Long userId, Long initalBalance){
         AccountUser accountUser = accountUserRepository.findById(userId)
                 .orElseThrow(
-                        () -> new AccountException(ErrorCode.USER_NOT_FOUND)
+                        () -> new AccountException(USER_NOT_FOUND)
                 );
         //Validating Accounts total
         validateCreateAccount(accountUser);
@@ -69,7 +72,7 @@ public class AccountService {
     public AccountDto deleteAccount(Long userId, String accountNumber) {
         AccountUser accountUser = accountUserRepository.findById(userId)
                 .orElseThrow(
-                        () -> new AccountException(ErrorCode.USER_NOT_FOUND)
+                        () -> new AccountException(USER_NOT_FOUND)
                 );
         Account account = accountRespository.findByAccountNumber(accountNumber)
                 .orElseThrow(
@@ -95,5 +98,14 @@ public class AccountService {
         if(account.getBalance() > 0L){
             throw new AccountException(ErrorCode.BALANCE_NOT_EMPTY);
         }
+    }
+
+    @Transactional
+    public List<AccountDto> getAccountByUserId(Long userId) {
+        AccountUser accountUser = accountUserRepository.findById(userId)
+                .orElseThrow(()->new AccountException(USER_NOT_FOUND));
+        List<Account> accounts = accountRespository.findByAccountUser(accountUser);
+        return accounts.stream()
+                .map(AccountDto::fromEntity).collect(Collectors.toList());
     }
 }
