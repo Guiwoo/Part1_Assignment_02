@@ -93,19 +93,15 @@ spring:
   ```
 
 ### Package Structures
-    - Controller
-    - Service
-    - Domain
-    - Repository
+- aop : Aop 로 중복거래 방지 락을 걸때 사용
+- config : Redis 관련 설정 및 클라이언트 빈등록,jpa 관련 설정 등록
+- controller : Api의 endPoint 등록, 요청/응답형식의 클래스
+- domain : jap entity
+- dto : DTO 를 위치 시키는 곳
+  - Contorller 에서 요청 / 응답 에 사용할 클래스
+  - 로직 내부에서 데이터 전송에 사용할 클래스
+- exception : 커스텀 exception , exception 해들러 클래스 패키지
+- repository : repository db연결 인터페이스가 위치
+- service : 비즈니스 로직을 담는 서비스 클래스 패키지
+- type : 상태타입, 에러코드, 거래종류 등의 다양한 enum class 패키지
 
-- Domain
-  - Entity Table setting class "자바 객체가 아닌 설정 의 클래스"
-  - @Getter @Setter @NoArgsConstructor @AllArgsConstruer
-- Repository
-  - Entity 내용을 저장 interface 임
-- Service
-  - Repository 를 활용할 아이
-  - Transactional
-- Controller
-  - 외부에서 접속할떄 여기로 접속해서 통해서 service 로 이동
-  - GetMapping
