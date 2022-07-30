@@ -4,7 +4,7 @@ import com.example.account.domain.Account;
 import com.example.account.domain.AccountUser;
 import com.example.account.dto.AccountDto;
 import com.example.account.exception.AccountException;
-import com.example.account.repository.AccountRespository;
+import com.example.account.repository.AccountRepository;
 import com.example.account.repository.AccountUserRepository;
 import com.example.account.type.AccountStatus;
 import com.example.account.type.ErrorCode;
@@ -24,7 +24,7 @@ import static com.example.account.type.ErrorCode.USER_NOT_FOUND;
 @Service
 @RequiredArgsConstructor
 public class AccountService {
-    private final AccountRespository accountRespository;
+    private final AccountRepository accountRespository;
     private final AccountUserRepository accountUserRepository;
 
     /**
