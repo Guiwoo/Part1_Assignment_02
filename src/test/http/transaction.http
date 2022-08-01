@@ -8,6 +8,16 @@ Content-Type: application/json
   "amount" : 300000
 }
 
+### useBalance2
+POST http://localhost:8080/transaction/use
+Content-Type: application/json
+
+{
+"userId": 1,
+"accountNumber": "1000000000",
+"amount" : 300000
+}
+
 ### cancel balance
 POST http://localhost:8080/transaction/cancel
 Content-Type: application/json

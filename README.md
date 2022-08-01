@@ -73,7 +73,7 @@ spring:
           }
       }
   }
-  // RedisRepositryCOnfig
+  // RedisRepositoryConfig
   @Configuration
   public class RedisRepositoryConfig {
   @Value("${spring.redis.host}")
@@ -111,3 +111,10 @@ spring:
 #### 잔액사용    API
 #### 잔액사용취소 API
 #### 잔액사용 API
+
+### 계좌 시스템 업데이트
+1. 일관성 있는 예외처리
+2. 중복거래 방지 AOP
+  - 여러 동시 여청이 동일한 자원에접근하며 
+  - 발생하는 무제들을 통칭,주로 DB 에서 동일한 레코드를 접근하다 문제가 발생
+3. 

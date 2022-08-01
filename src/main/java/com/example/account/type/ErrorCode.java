@@ -6,8 +6,10 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
+    INTERNAL_SERVER_ERROR("내부 서버 오류 입니다."),
     ACCOUNT_NOT_FOUND("계좌가 없습니다"),
     ACCOUNT_ALREADY_UNREGISTERED("계좌가 이미 해지 되었습니다."),
+    ACCOUNT_TRANSACTION_LOCK("계좌 는 사용중 입니다."),
     AMOUNT_EXCEED_BALANCE("거래 금액이 계좌 잔고 보다 큽니다."),
     BALANCE_NOT_EMPTY("잔고 가 있어, 계좌해지 불가능"),
     CANCEL_MUST_FULLY("부분 취소는 붕가능 합니다."),
