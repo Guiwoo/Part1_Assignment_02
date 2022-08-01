@@ -7,3 +7,16 @@ Content-Type: application/json
   "accountNumber": "1000000000",
   "amount" : 300000
 }
+
+### cancel balance
+POST http://localhost:8080/transaction/cancel
+Content-Type: application/json
+
+{
+  "transactionId": "fec4b8ee95434a2b8313517cdbdd624f",
+  "accountNumber": "1000000000",
+  "amount" : 300000
+}
+
+### get Transaction
+GET http://localhost:8080/transaction/ce42d57165434560a030ba7303dfedd9
