@@ -47,9 +47,8 @@ class TransactionServiceTest {
     void successUseBalance(){
         //given
         AccountUser pobi = AccountUser.builder()
-                .id(12L)
                 .name("pobi").build();
-
+        pobi.setId(12L);
         given(accountUserRepository.findById(anyLong()))
                 .willReturn(Optional.of(pobi));
 
@@ -90,9 +89,8 @@ class TransactionServiceTest {
     void transactionUserNotFound(){
         //given
         AccountUser pobi = AccountUser.builder()
-                .id(12L)
                 .name("pobi").build();
-
+        pobi.setId(12L);
         given(accountUserRepository.findById(anyLong()))
                 .willReturn(Optional.empty());
 
@@ -109,9 +107,8 @@ class TransactionServiceTest {
     void deleteAccountAccountNotFound(){
         //given
         AccountUser pobi = AccountUser.builder()
-                .id(12L)
                 .name("pobi").build();
-
+        pobi.setId(12L);
         given(accountUserRepository.findById(anyLong()))
                 .willReturn(Optional.of(pobi));
 
@@ -132,12 +129,11 @@ class TransactionServiceTest {
     void deleteAccountUserUnmatched(){
         //given
         AccountUser pobi = AccountUser.builder()
-                .id(12L)
                 .name("Pobi").build();
+        pobi.setId(12L);
         AccountUser pobi2 = AccountUser.builder()
-                .id(13L)
                 .name("Bipo").build();
-
+        pobi2.setId(13L);
         given(accountUserRepository.findById(anyLong()))
                 .willReturn(Optional.of(pobi));
 
@@ -160,9 +156,8 @@ class TransactionServiceTest {
     void deleteAccountAlreadyUnregistered(){
         //given
         AccountUser pobi = AccountUser.builder()
-                .id(12L)
                 .name("Pobi").build();
-
+        pobi.setId(12L);
         given(accountUserRepository.findById(anyLong()))
                 .willReturn(Optional.of(pobi));
 
@@ -186,9 +181,8 @@ class TransactionServiceTest {
     void amountExceedBalance(){
         //given
         AccountUser pobi = AccountUser.builder()
-                .id(12L)
                 .name("pobi").build();
-
+        pobi.setId(12L);
         Account a = Account.builder()
                 .accountUser(pobi)
                 .accountStatus(AccountStatus.IN_USE)
@@ -214,9 +208,8 @@ class TransactionServiceTest {
     void failedUseBalance(){
         //given
         AccountUser pobi = AccountUser.builder()
-                .id(12L)
                 .name("pobi").build();
-
+        pobi.setId(12L);
         Account a = Account.builder()
                 .accountUser(pobi)
                 .accountStatus(AccountStatus.IN_USE)
@@ -252,9 +245,8 @@ class TransactionServiceTest {
     void successCancelBalance(){
         //given
         AccountUser pobi = AccountUser.builder()
-                .id(12L)
                 .name("pobi").build();
-
+        pobi.setId(12L);
         Account a = Account.builder()
                 .accountUser(pobi)
                 .accountStatus(AccountStatus.IN_USE)
@@ -305,8 +297,8 @@ class TransactionServiceTest {
     void cancelTransaction_AccountNotFound(){
         //given
         AccountUser pobi = AccountUser.builder()
-                .id(12L)
                 .name("pobi").build();
+        pobi.setId(12L);
         Transaction transaction = Transaction.builder().build();
         given(transactionRepository.findByTransactionId(anyString()))
                 .willReturn(Optional.of(transaction));
@@ -349,21 +341,20 @@ class TransactionServiceTest {
     void cancelTransaction_TransactionAccountUnMatched(){
         //given
         AccountUser pobi = AccountUser.builder()
-                .id(12L)
                 .name("pobi").build();
-
+        pobi.setId(12L);
         Account a = Account.builder()
-                .id(1L)
                 .accountUser(pobi)
                 .accountStatus(AccountStatus.IN_USE)
                 .balance(10000L)
                 .accountNumber("1000000000").build();
+        a.setId(1L);
         Account b = Account.builder()
-                .id(2L)
                 .accountUser(pobi)
                 .accountStatus(AccountStatus.IN_USE)
                 .balance(10000L)
                 .accountNumber("1000000001").build();
+        b.setId(2L);
         Transaction transaction = Transaction.builder()
                 .account(a)
                 .transactionType(USE)
@@ -396,15 +387,15 @@ class TransactionServiceTest {
     void cancelTransaction_TransactionAmountUnMatched(){
         //given
         AccountUser pobi = AccountUser.builder()
-                .id(12L)
                 .name("pobi").build();
+        pobi.setId(12L);
 
         Account a = Account.builder()
-                .id(1L)
                 .accountUser(pobi)
                 .accountStatus(AccountStatus.IN_USE)
                 .balance(10000L)
                 .accountNumber("1000000000").build();
+        a.setId(1L);
         Transaction transaction = Transaction.builder()
                 .account(a)
                 .transactionType(USE)
@@ -437,15 +428,14 @@ class TransactionServiceTest {
     void cancelTransaction_TransactionCancelExpired(){
         //given
         AccountUser pobi = AccountUser.builder()
-                .id(12L)
                 .name("pobi").build();
-
+        pobi.setId(12L);
         Account a = Account.builder()
-                .id(1L)
                 .accountUser(pobi)
                 .accountStatus(AccountStatus.IN_USE)
                 .balance(10000L)
                 .accountNumber("1000000000").build();
+        a.setId(1L);
         Transaction transaction = Transaction.builder()
                 .account(a)
                 .transactionType(USE)
@@ -478,15 +468,14 @@ class TransactionServiceTest {
     @DisplayName("거래내역조회_성공")
     void successQueryTransaction(){
         AccountUser pobi = AccountUser.builder()
-                .id(12L)
                 .name("pobi").build();
-
+        pobi.setId(12L);
         Account a = Account.builder()
-                .id(1L)
                 .accountUser(pobi)
                 .accountStatus(AccountStatus.IN_USE)
                 .balance(10000L)
                 .accountNumber("1000000000").build();
+        a.setId(1L);
         Transaction transaction = Transaction.builder()
                 .account(a)
                 .transactionType(USE)
