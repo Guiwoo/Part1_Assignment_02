@@ -39,6 +39,40 @@ class AccountServiceTest {
     @InjectMocks
     private AccountService accountService;
 
+//    @Test 318 ms
+//    @DisplayName("계좌생성_성공/동일 계좌가 있을시")
+//    void createAccountSuccess1(){
+//        //given
+//        AccountUser pobi = AccountUser.builder()
+//                .name("pobi").build();
+//        pobi.setId(12L);
+//        given(accountUserRepository.findById(anyLong()))
+//                .willReturn(Optional.of(pobi));
+//        //중복 터트려줄 모킹
+//        given(accountRespository.countAccountByAccountNumber(anyString()))
+//                .willReturn(1) //중복
+//                .willReturn(0); //중복아님
+//
+//        given(accountRespository.save(any()))
+//                .willReturn(Account.builder()
+//                        .accountUser(pobi)
+//                        .accountType(AccountType.CHECKING)
+//                        .accountNumber("1000000013").build());
+//
+//        ArgumentCaptor<Account> captor = ArgumentCaptor.forClass(Account.class);
+//
+//        //when
+//        AccountDto accountDto = accountService.createAccount(
+//                1L, 100L, AccountType.CHECKING
+//        );
+//        //then
+//        // 2번 실행되기 때문에 2번이 실행된지 확인여부
+//        verify(accountRespository,times(2))
+//                .countAccountByAccountNumber(any());
+//        assertEquals(12L,accountDto.getUserId());
+//    }
+
+    //301ms
     @Test
     @DisplayName("계좌생성_성공/동일 계좌가 있을시")
     void createAccountSuccess(){
@@ -49,9 +83,11 @@ class AccountServiceTest {
         given(accountUserRepository.findById(anyLong()))
                 .willReturn(Optional.of(pobi));
         //중복 터트려줄 모킹
-        given(accountRespository.countAccountByAccountNumber(anyString()))
-                .willReturn(1) //중복
-                        .willReturn(0); //중복아님
+        given(accountRespository.existsAccountByAccountNumber(anyString()))
+                .willReturn(true) //중복
+                .willReturn(true)
+                .willReturn(true)
+                .willReturn(false); //중복아님
 
         given(accountRespository.save(any()))
                 .willReturn(Account.builder()
@@ -67,8 +103,8 @@ class AccountServiceTest {
         );
         //then
         // 2번 실행되기 때문에 2번이 실행된지 확인여부
-        verify(accountRespository,times(2))
-                .countAccountByAccountNumber(any());
+        verify(accountRespository,times(4))
+                .existsAccountByAccountNumber(any());
         assertEquals(12L,accountDto.getUserId());
     }
 

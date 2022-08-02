@@ -43,8 +43,8 @@ public class AccountService {
         while(true){
             System.out.println("Generating Account...");
             newAcc = generateAccountNumber(accType);
-            int get = accountRespository.countAccountByAccountNumber(newAcc);
-            if(get == 0){
+            boolean get = accountRespository.existsAccountByAccountNumber(newAcc);
+            if(!get){
                 break;
             }
         }
