@@ -1,5 +1,21 @@
 # Misson2 Account
 
+## 전체구조
+![image info](./img01.png)
+
+### Package Structures Summarize
+- aop : Aop 로 중복거래 방지 락을 걸때 사용
+- config : Redis 관련 설정 및 클라이언트 빈등록,jpa 관련 설정 등록
+- controller : Api의 endPoint 등록, 요청/응답형식의 클래스
+- domain : jap entity
+- dto : DTO 를 위치 시키는 곳
+  - Contorller 에서 요청 / 응답 에 사용할 클래스
+  - 로직 내부에서 데이터 전송에 사용할 클래스
+- exception : 커스텀 exception , exception 해들러 클래스 패키지
+- repository : repository db연결 인터페이스가 위치
+- service : 비즈니스 로직을 담는 서비스 클래스 패키지
+- type : 상태타입, 에러코드, 거래종류 등의 다양한 enum class 패키지
+
 ## Project Init
     - Sping 2.7.2
     - Validation
@@ -91,20 +107,6 @@ spring:
   
   }
   ```
-
-### Package Structures
-- aop : Aop 로 중복거래 방지 락을 걸때 사용
-- config : Redis 관련 설정 및 클라이언트 빈등록,jpa 관련 설정 등록
-- controller : Api의 endPoint 등록, 요청/응답형식의 클래스
-- domain : jap entity
-- dto : DTO 를 위치 시키는 곳
-  - Contorller 에서 요청 / 응답 에 사용할 클래스
-  - 로직 내부에서 데이터 전송에 사용할 클래스
-- exception : 커스텀 exception , exception 해들러 클래스 패키지
-- repository : repository db연결 인터페이스가 위치
-- service : 비즈니스 로직을 담는 서비스 클래스 패키지
-- type : 상태타입, 에러코드, 거래종류 등의 다양한 enum class 패키지
-
 
 #### 계좌생성    API
 #### 계좌해지    API

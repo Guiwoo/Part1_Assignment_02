@@ -2,6 +2,7 @@ package com.example.account.domain;
 
 import com.example.account.exception.AccountException;
 import com.example.account.type.AccountStatus;
+import com.example.account.type.AccountType;
 import com.example.account.type.ErrorCode;
 import lombok.*;
 
@@ -19,6 +20,9 @@ public class Account extends BaseEntity {
     @ManyToOne
     private AccountUser accountUser;
     private String accountNumber;
+
+    @Enumerated(EnumType.STRING)
+    private AccountType accountType;
 
     @Enumerated(EnumType.STRING)
     private AccountStatus accountStatus;

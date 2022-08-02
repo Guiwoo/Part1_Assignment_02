@@ -23,7 +23,8 @@ public class AccountController {
         return CreateAccount.Response.from(
                 accountService.createAccount(
                         request.getUserId(),
-                        request.getInitialBalance()
+                        request.getInitialBalance(),
+                        request.getAccountType()
                 )
         );
     }

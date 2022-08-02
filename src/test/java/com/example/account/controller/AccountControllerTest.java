@@ -5,6 +5,7 @@ import com.example.account.dto.CreateAccount;
 import com.example.account.dto.DeleteAccount;
 import com.example.account.exception.AccountException;
 import com.example.account.service.AccountService;
+import com.example.account.type.AccountType;
 import com.example.account.type.ErrorCode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -19,8 +20,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -44,9 +44,10 @@ class AccountControllerTest {
     @DisplayName("계좌생성")
     void sucessCreateAccount() throws Exception {
         //given
-        given(accountService.createAccount(anyLong(),anyLong()))
+        given(accountService.createAccount(anyLong(),anyLong(),any()))
                 .willReturn(AccountDto.builder()
                         .userId(1L)
+                        .accountType(AccountType.CHECKING)
                         .accountNumber("123456789")
                         .registeredAt(LocalDateTime.now())
                         .unRegisteredAt(LocalDateTime.now())
@@ -57,10 +58,11 @@ class AccountControllerTest {
         mockMvc.perform(post("/account")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(
-                        new CreateAccount.Request(1L,100L)
+                        new CreateAccount.Request(1L,100L,AccountType.CHECKING)
                 ))
                 )
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.accountType").value("CHECKING"))
                 .andExpect(jsonPath("$.userId").value(1))
                 .andExpect(jsonPath("$.accountNumber").value("123456789"))
                 .andDo(print());

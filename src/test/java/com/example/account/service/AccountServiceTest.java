@@ -7,6 +7,7 @@ import com.example.account.exception.AccountException;
 import com.example.account.repository.AccountRepository;
 import com.example.account.repository.AccountUserRepository;
 import com.example.account.type.AccountStatus;
+import com.example.account.type.AccountType;
 import com.example.account.type.ErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -61,7 +62,7 @@ class AccountServiceTest {
 
         //when
         AccountDto accountDto = accountService.createAccount(
-                1L, 100L
+                1L, 100L, AccountType.CHECKING
         );
         //then
         verify(accountRespository,times(1))
@@ -91,7 +92,7 @@ class AccountServiceTest {
 
         //when
         AccountDto accountDto = accountService.createAccount(
-                1L, 100L
+                1L, 100L,AccountType.CHECKING
         );
         //then
         verify(accountRespository,times(1))
@@ -114,7 +115,7 @@ class AccountServiceTest {
 
         //when
         AccountException exception =  assertThrows(AccountException.class,
-                ()->accountService.createAccount(1L, 100L)
+                ()->accountService.createAccount(1L, 100L,AccountType.CHECKING)
         );
         //then
         assertEquals(ErrorCode.USER_NOT_FOUND,exception.getErrorCode());
@@ -134,7 +135,7 @@ class AccountServiceTest {
                 .willReturn(10);
         //when
         AccountException exception =  assertThrows(AccountException.class,
-                ()->accountService.createAccount(1L, 100L)
+                ()->accountService.createAccount(1L, 100L,AccountType.CHECKING)
         );
         //then
         assertEquals(ErrorCode.MAX_ACCOUNT_PER_USER_10,exception.getErrorCode());

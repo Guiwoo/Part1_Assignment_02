@@ -7,6 +7,7 @@ import com.example.account.exception.AccountException;
 import com.example.account.repository.AccountRepository;
 import com.example.account.repository.AccountUserRepository;
 import com.example.account.type.AccountStatus;
+import com.example.account.type.AccountType;
 import com.example.account.type.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class AccountService {
      * 계좌 저장 하고 정보 리턴
      */
     @Transactional
-    public AccountDto createAccount(Long userId, Long initalBalance){
+    public AccountDto createAccount(Long userId, Long initialBalance,AccountType accType){
         AccountUser accountUser = getAccountUser(userId);
         //Validating Accounts total
         validateCreateAccount(accountUser);
@@ -44,10 +45,11 @@ public class AccountService {
 
         Account account = accountRespository.save(
                 Account.builder()
+                        .accountType(accType)
                         .accountUser(accountUser)
                         .accountStatus(IN_USE)
                         .accountNumber(newAccountNumber)
-                        .balance(initalBalance)
+                        .balance(initialBalance)
                         .registeredAt(LocalDateTime.now())
                         .build()
         );
