@@ -17,6 +17,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import static com.example.account.type.AccountStatus.*;
@@ -36,32 +37,60 @@ public class AccountService {
     @Transactional
     public AccountDto createAccount(Long userId, Long initialBalance,AccountType accType){
         AccountUser accountUser = getAccountUser(userId);
-        //Validating Accounts total
         validateCreateAccount(accountUser);
-
-        String newAccountNumber = accountRespository.findFirstByOrderByIdDesc()
-                .map(acc -> (Integer.parseInt(acc.getAccountNumber()))+1+ "")
-                .orElse("1000000000");
+        //account number setting
+        String newAcc;
+        while(true){
+            System.out.println("Generating Account...");
+            newAcc = generateAccountNumber(accType);
+            int get = accountRespository.countAccountByAccountNumber(newAcc);
+            if(get == 0){
+                break;
+            }
+        }
 
         Account account = accountRespository.save(
                 Account.builder()
                         .accountType(accType)
+                        .accountNumber(newAcc)
                         .accountUser(accountUser)
                         .accountStatus(IN_USE)
-                        .accountNumber(newAccountNumber)
                         .balance(initialBalance)
                         .registeredAt(LocalDateTime.now())
                         .build()
         );
+
         return AccountDto.fromEntity(account);
+    }
+    private String generateAccountNumber(AccountType accountType){
+        String genAcc= "";
+        switch (accountType){
+            case CHECKING:
+                genAcc+="1000";
+                break;
+            case SAVING:
+                genAcc+="2000";
+                break;
+            case MONEY_MARKET:
+                genAcc+="3000";
+                break;
+            case CERTIFICATE_OF_DEPOSIT:
+                genAcc+="4000";
+                break;
+        }
+        Random r = new Random();
+        for(int i=0;i<6;i++){
+            genAcc+=r.nextInt(10);
+        }
+        System.out.println("✅"+ genAcc);
+        return genAcc.toString();
     }
 
     private AccountUser getAccountUser(Long userId) {
-        AccountUser accountUser = accountUserRepository.findById(userId)
+        return accountUserRepository.findById(userId)
                 .orElseThrow(
                         () -> new AccountException(USER_NOT_FOUND)
                 );
-        return accountUser;
     }
 
     private void validateCreateAccount(AccountUser accountUser) {

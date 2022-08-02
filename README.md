@@ -1,6 +1,6 @@
 # Misson2 Account
 
-## 전체구조
+## Data Stream 
 ![image info](./img01.png)
 
 ### Package Structures Summarize
@@ -119,4 +119,4 @@ spring:
 2. 중복거래 방지 AOP
   - 여러 동시 여청이 동일한 자원에접근하며 
   - 발생하는 무제들을 통칭,주로 DB 에서 동일한 레코드를 접근하다 문제가 발생
-3. 
+3. 리팩토링

@@ -40,7 +40,7 @@ class AccountServiceTest {
     private AccountService accountService;
 
     @Test
-    @DisplayName("계좌생성_성공/다른 계좌가 있을시")
+    @DisplayName("계좌생성_성공/동일 계좌가 있을시")
     void createAccountSuccess(){
         //given
         AccountUser pobi = AccountUser.builder()
@@ -48,15 +48,16 @@ class AccountServiceTest {
         pobi.setId(12L);
         given(accountUserRepository.findById(anyLong()))
                 .willReturn(Optional.of(pobi));
-
-        given(accountRespository.findFirstByOrderByIdDesc())
-                .willReturn(Optional.of(Account.builder()
-                                .accountNumber("1000000012").build()));
+        //중복 터트려줄 모킹
+        given(accountRespository.countAccountByAccountNumber(anyString()))
+                .willReturn(1) //중복
+                        .willReturn(0); //중복아님
 
         given(accountRespository.save(any()))
                 .willReturn(Account.builder()
-                                .accountUser(pobi)
-                                .accountNumber("1000000013").build());
+                        .accountUser(pobi)
+                        .accountType(AccountType.CHECKING)
+                        .accountNumber("1000000013").build());
 
         ArgumentCaptor<Account> captor = ArgumentCaptor.forClass(Account.class);
 
@@ -65,41 +66,41 @@ class AccountServiceTest {
                 1L, 100L, AccountType.CHECKING
         );
         //then
-        verify(accountRespository,times(1))
-                .save(captor.capture());
+        // 2번 실행되기 때문에 2번이 실행된지 확인여부
+        verify(accountRespository,times(2))
+                .countAccountByAccountNumber(any());
         assertEquals(12L,accountDto.getUserId());
-        assertEquals("1000000013",captor.getValue().getAccountNumber());
     }
 
-    @Test
-    @DisplayName("계좌생성_성공/첫번째 계좌인 경우")
-    void createFirstAccount(){
-        //given
-        AccountUser pobi = AccountUser.builder()
-                .name("pobi").build();
-        pobi.setId(15L);
-        given(accountUserRepository.findById(anyLong()))
-                .willReturn(Optional.of(pobi));
-        //계좌가 없는경우 테스트
-        given(accountRespository.findFirstByOrderByIdDesc())
-                .willReturn(Optional.empty());
-
-        given(accountRespository.save(any()))
-                .willReturn(Account.builder()
-                        .accountUser(pobi)
-                        .accountNumber("1000000013").build());
-        ArgumentCaptor<Account> captor = ArgumentCaptor.forClass(Account.class);
-
-        //when
-        AccountDto accountDto = accountService.createAccount(
-                1L, 100L,AccountType.CHECKING
-        );
-        //then
-        verify(accountRespository,times(1))
-                .save(captor.capture());
-        assertEquals(15L,accountDto.getUserId());
-        assertEquals("1000000000",captor.getValue().getAccountNumber());
-    }
+//    @Test 랜덤 넘버생성 이기 때문에 테스트코드 스킵
+//    @DisplayName("계좌생성_성공/첫번째 계좌인 경우")
+//    void createFirstAccount(){
+//        //given
+//        AccountUser pobi = AccountUser.builder()
+//                .name("pobi").build();
+//        pobi.setId(15L);
+//        given(accountUserRepository.findById(anyLong()))
+//                .willReturn(Optional.of(pobi));
+//        //계좌가 없는경우 테스트
+//        given(accountRespository.findFirstByOrderByIdDesc())
+//                .willReturn(Optional.empty());
+//
+//        given(accountRespository.save(any()))
+//                .willReturn(Account.builder()
+//                        .accountUser(pobi)
+//                        .accountNumber("1000000013").build());
+//        ArgumentCaptor<Account> captor = ArgumentCaptor.forClass(Account.class);
+//
+//        //when
+//        AccountDto accountDto = accountService.createAccount(
+//                1L, 100L,AccountType.CHECKING
+//        );
+//        //then
+//        verify(accountRespository,times(1))
+//                .save(captor.capture());
+//        assertEquals(15L,accountDto.getUserId());
+//        assertEquals("1000000000",captor.getValue().getAccountNumber());
+//    }
 
     @Test
     @DisplayName("계좌생성_실패/유저 가 없다면")
@@ -275,6 +276,7 @@ class AccountServiceTest {
         given(accountRespository.findByAccountNumber(anyString()))
                 .willReturn(Optional.of(Account.builder()
                         .accountUser(pobi)
+                                .accountType(AccountType.CHECKING)
                         .balance(100L)
                         .accountStatus(AccountStatus.UNREGISTERED)
                         .accountNumber("1000000012").build()));
