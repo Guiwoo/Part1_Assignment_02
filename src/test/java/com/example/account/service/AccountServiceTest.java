@@ -1,9 +1,11 @@
 package com.example.account.service;
 
 import com.example.account.domain.Account;
+import com.example.account.domain.AccountNumber;
 import com.example.account.domain.AccountUser;
 import com.example.account.dto.AccountDto;
 import com.example.account.exception.AccountException;
+import com.example.account.repository.AccountNumberRepository;
 import com.example.account.repository.AccountRepository;
 import com.example.account.repository.AccountUserRepository;
 import com.example.account.type.AccountStatus;
@@ -35,6 +37,9 @@ class AccountServiceTest {
     private AccountRepository accountRespository;
     @Mock
     private AccountUserRepository accountUserRepository;
+
+    @Mock
+    private AccountNumberRepository accountNumberRepository;
 
     @InjectMocks
     private AccountService accountService;
@@ -83,7 +88,7 @@ class AccountServiceTest {
         given(accountUserRepository.findById(anyLong()))
                 .willReturn(Optional.of(pobi));
         //중복 터트려줄 모킹
-        given(accountRespository.existsAccountByAccountNumber(anyString()))
+        given(accountNumberRepository.existsAccountNumbersByAccountNumber(anyString()))
                 .willReturn(true) //중복
                 .willReturn(true)
                 .willReturn(true)
@@ -93,7 +98,11 @@ class AccountServiceTest {
                 .willReturn(Account.builder()
                         .accountUser(pobi)
                         .accountType(AccountType.CHECKING)
-                        .accountNumber("1000000013").build());
+                        .accountNumber(
+                                AccountNumber.builder()
+                                        .accountNumber("1000000013")
+                                        .build()
+                        ).build());
 
         ArgumentCaptor<Account> captor = ArgumentCaptor.forClass(Account.class);
 
@@ -103,8 +112,8 @@ class AccountServiceTest {
         );
         //then
         // 2번 실행되기 때문에 2번이 실행된지 확인여부
-        verify(accountRespository,times(4))
-                .existsAccountByAccountNumber(any());
+        verify(accountNumberRepository,times(4))
+                .existsAccountNumbersByAccountNumber(any());
         assertEquals(12L,accountDto.getUserId());
     }
 
@@ -192,7 +201,11 @@ class AccountServiceTest {
                 .willReturn(Optional.of(Account.builder()
                         .accountUser(pobi)
                         .balance(0L)
-                        .accountNumber("1000000012").build()));
+                        .accountNumber(
+                                AccountNumber.builder()
+                                        .accountNumber("1000000012")
+                                        .build()
+                        ).build()));
 
 
         ArgumentCaptor<Account> captor = ArgumentCaptor.forClass(Account.class);
@@ -205,7 +218,7 @@ class AccountServiceTest {
         verify(accountRespository,times(1))
                 .save(captor.capture());
         assertEquals(12L,accountDto.getUserId());
-        assertEquals("1000000012",captor.getValue().getAccountNumber());
+        assertEquals("1000000012",captor.getValue().getAccountNumber().getAccountNumber());
 
         assertEquals(AccountStatus.UNREGISTERED,captor.getValue().getAccountStatus());
     }
@@ -266,7 +279,11 @@ class AccountServiceTest {
                 .willReturn(Optional.of(Account.builder()
                         .accountUser(pobi2)
                         .balance(0L)
-                        .accountNumber("1000000012").build()));
+                        .accountNumber(
+                                AccountNumber.builder()
+                                        .accountNumber("123456789")
+                                        .build()
+                        ).build()));
 
         //when
         AccountException exception =  assertThrows(AccountException.class,
@@ -290,7 +307,11 @@ class AccountServiceTest {
                 .willReturn(Optional.of(Account.builder()
                         .accountUser(pobi)
                         .balance(100L)
-                        .accountNumber("1000000012").build()));
+                        .accountNumber(
+                                AccountNumber.builder()
+                                        .accountNumber("123456789")
+                                        .build()
+                        ).build()));
 
         //when
         AccountException exception =  assertThrows(AccountException.class,
@@ -315,7 +336,9 @@ class AccountServiceTest {
                                 .accountType(AccountType.CHECKING)
                         .balance(100L)
                         .accountStatus(AccountStatus.UNREGISTERED)
-                        .accountNumber("1000000012").build()));
+                        .accountNumber(AccountNumber.builder()
+                                .accountNumber("123456789")
+                                .build()).build()));
 
         //when
         AccountException exception =  assertThrows(AccountException.class,
@@ -335,17 +358,25 @@ class AccountServiceTest {
         List<Account> accounts = Arrays.asList(
                 Account.builder()
                         .accountUser(pobi)
-                        .accountNumber("1111111111")
+                        .accountNumber(
+                                AccountNumber.builder()
+                                        .accountNumber("1111111111")
+                                        .build()
+                        )
                         .balance(1000L)
                         .build(),
                 Account.builder()
                         .accountUser(pobi)
-                        .accountNumber("2222222222")
+                        .accountNumber(AccountNumber.builder()
+                                .accountNumber("2222222222")
+                                .build())
                         .balance(2000L)
                         .build(),
                 Account.builder()
                         .accountUser(pobi)
-                        .accountNumber("3333333333")
+                        .accountNumber(AccountNumber.builder()
+                                .accountNumber("3333333333")
+                                .build())
                         .balance(3000L)
                         .build()
         );
@@ -361,7 +392,7 @@ class AccountServiceTest {
 
         //then
         assertEquals(3,accountDtos.size());
-        assertEquals("1111111111",accountDtos.get(0).getAccountNumber());
+        assertEquals("1111111111",accountDtos.get(0).getAccountNumber().getAccountNumber());
         assertEquals(1000L,accountDtos.get(0).getBalance());
     }
 

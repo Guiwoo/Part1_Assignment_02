@@ -1,5 +1,6 @@
 package com.example.account.dto;
 
+import com.example.account.domain.AccountNumber;
 import lombok.*;
 
 import javax.validation.constraints.Min;
@@ -29,7 +30,7 @@ public class DeleteAccount {
     @Builder
     public static  class Response{
         private Long userId;
-        private String accountNumber;
+        private AccountNumber accountNumber;
         private LocalDateTime unRegisteredAt;
 
         public static Response from(AccountDto accountDto){

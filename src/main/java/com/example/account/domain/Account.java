@@ -8,7 +8,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Random;
 
 @Getter
 @Setter
@@ -20,7 +19,10 @@ public class Account extends BaseEntity {
 
     @ManyToOne
     private AccountUser accountUser;
-    private String accountNumber;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "account_number_id")
+    private AccountNumber accountNumber;
 
     @Enumerated(EnumType.STRING)
     private AccountType accountType;

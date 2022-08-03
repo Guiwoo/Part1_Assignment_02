@@ -1,9 +1,11 @@
 package com.example.account.service;
 
 import com.example.account.domain.Account;
+import com.example.account.domain.AccountNumber;
 import com.example.account.domain.AccountUser;
 import com.example.account.dto.AccountDto;
 import com.example.account.exception.AccountException;
+import com.example.account.repository.AccountNumberRepository;
 import com.example.account.repository.AccountRepository;
 import com.example.account.repository.AccountUserRepository;
 import com.example.account.type.AccountStatus;
@@ -28,6 +30,7 @@ import static com.example.account.type.ErrorCode.USER_NOT_FOUND;
 public class AccountService {
     private final AccountRepository accountRespository;
     private final AccountUserRepository accountUserRepository;
+    private final AccountNumberRepository accountNumberRepository;
 
     /**
      * 사용자 있는지 확인
@@ -43,7 +46,7 @@ public class AccountService {
         while(true){
             System.out.println("Generating Account...");
             newAcc = generateAccountNumber(accType);
-            boolean get = accountRespository.existsAccountByAccountNumber(newAcc);
+            boolean get = accountNumberRepository.existsAccountNumbersByAccountNumber(newAcc);
             if(!get){
                 break;
             }
@@ -52,7 +55,9 @@ public class AccountService {
         Account account = accountRespository.save(
                 Account.builder()
                         .accountType(accType)
-                        .accountNumber(newAcc)
+                        .accountNumber(AccountNumber.builder()
+                                .accountNumber(newAcc)
+                                .build())
                         .accountUser(accountUser)
                         .accountStatus(IN_USE)
                         .balance(initialBalance)

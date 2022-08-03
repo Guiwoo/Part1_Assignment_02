@@ -1,5 +1,6 @@
 package com.example.account.controller;
 
+import com.example.account.domain.AccountNumber;
 import com.example.account.dto.AccountDto;
 import com.example.account.dto.CreateAccount;
 import com.example.account.dto.DeleteAccount;
@@ -48,7 +49,9 @@ class AccountControllerTest {
                 .willReturn(AccountDto.builder()
                         .userId(1L)
                         .accountType(AccountType.CHECKING)
-                        .accountNumber("123456789")
+                        .accountNumber(AccountNumber.builder()
+                                .accountNumber("123456789")
+                                .build())
                         .registeredAt(LocalDateTime.now())
                         .unRegisteredAt(LocalDateTime.now())
                         .build());
@@ -64,7 +67,7 @@ class AccountControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.accountType").value("CHECKING"))
                 .andExpect(jsonPath("$.userId").value(1))
-                .andExpect(jsonPath("$.accountNumber").value("123456789"))
+                .andExpect(jsonPath("$.accountNumber.accountNumber").value("123456789"))
                 .andDo(print());
     }
     @Test
@@ -74,7 +77,9 @@ class AccountControllerTest {
         given(accountService.deleteAccount(anyLong(),anyString()))
                 .willReturn(AccountDto.builder()
                         .userId(1L)
-                        .accountNumber("123456789")
+                        .accountNumber(AccountNumber.builder()
+                                .accountNumber("123456789")
+                                .build())
                         .registeredAt(LocalDateTime.now())
                         .unRegisteredAt(LocalDateTime.now())
                         .build());
@@ -89,7 +94,7 @@ class AccountControllerTest {
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.userId").value(1))
-                .andExpect(jsonPath("$.accountNumber").value("123456789"))
+                .andExpect(jsonPath("$.accountNumber.accountNumber").value("123456789"))
                 .andDo(print());
     }
 
@@ -99,15 +104,25 @@ class AccountControllerTest {
         //given
         List<AccountDto> accountDtos = Arrays.asList(
                 AccountDto.builder()
-                        .accountNumber("1234567890")
+                        .accountNumber(
+                                AccountNumber.builder()
+                                        .accountNumber("123456789")
+                                        .build()
+                        )
                         .balance(1000L)
                         .build(),
                 AccountDto.builder()
-                        .accountNumber("1111111111")
+                        .accountNumber(
+                                AccountNumber.builder()
+                                        .accountNumber("1111111111")
+                                        .build()
+                        )
                         .balance(1000L)
                         .build(),
                 AccountDto.builder()
-                        .accountNumber("2222222222")
+                        .accountNumber(AccountNumber.builder()
+                                .accountNumber("2222222222")
+                                .build())
                         .balance(1000L)
                         .build()
         );
@@ -119,7 +134,7 @@ class AccountControllerTest {
         mockMvc.perform(get("/account?user_id=1"))
                 .andDo(print())
                 .andExpect(jsonPath("$[0].accountNumber")
-                        .value("1234567890"))
+                        .value("123456789"))
                 .andExpect(jsonPath("$[0].balance")
                         .value(1000L))
                 .andExpect(jsonPath("$[1].accountNumber")

@@ -1,5 +1,6 @@
 package com.example.account.dto;
 
+import com.example.account.domain.AccountNumber;
 import com.example.account.type.AccountType;
 import lombok.*;
 
@@ -31,7 +32,7 @@ public class CreateAccount {
     @Builder
     public static  class Response{
         private Long userId;
-        private String accountNumber;
+        private AccountNumber accountNumber;
         private LocalDateTime registeredAt;
         private AccountType accountType;
 
