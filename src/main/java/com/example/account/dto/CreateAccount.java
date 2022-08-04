@@ -32,7 +32,7 @@ public class CreateAccount {
     @Builder
     public static  class Response{
         private Long userId;
-        private AccountNumber accountNumber;
+        private String accountNumber;
         private LocalDateTime registeredAt;
         private AccountType accountType;
 

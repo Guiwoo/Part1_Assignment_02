@@ -52,12 +52,16 @@ public class AccountService {
             }
         }
 
+        AccountNumber accountNumber = accountNumberRepository.save(
+                AccountNumber.builder()
+                        .accountNumber(newAcc)
+                        .build()
+        );
+
         Account account = accountRespository.save(
                 Account.builder()
                         .accountType(accType)
-                        .accountNumber(AccountNumber.builder()
-                                .accountNumber(newAcc)
-                                .build())
+                        .accountNumber(accountNumber.getAccountNumber())
                         .accountUser(accountUser)
                         .accountStatus(IN_USE)
                         .balance(initialBalance)

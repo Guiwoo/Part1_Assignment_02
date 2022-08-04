@@ -30,7 +30,7 @@ public class DeleteAccount {
     @Builder
     public static  class Response{
         private Long userId;
-        private AccountNumber accountNumber;
+        private String accountNumber;
         private LocalDateTime unRegisteredAt;
 
         public static Response from(AccountDto accountDto){

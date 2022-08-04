@@ -57,11 +57,7 @@ class TransactionServiceTest {
                 .accountUser(pobi)
                 .accountStatus(AccountStatus.IN_USE)
                 .balance(10000L)
-                .accountNumber(
-                        AccountNumber.builder()
-                                .accountNumber("1000000000")
-                                .build()
-                ).build();
+                .accountNumber("1000000000").build();
         given(accountRepository.findByAccountNumber(anyString()))
                 .willReturn(Optional.of(a));
         given(transactionRepository.save(any()))
@@ -146,11 +142,7 @@ class TransactionServiceTest {
                 .willReturn(Optional.of(Account.builder()
                         .accountUser(pobi2)
                         .balance(0L)
-                        .accountNumber(
-                                AccountNumber.builder()
-                                        .accountNumber("1000000012")
-                                        .build()
-                        ).build()));
+                        .accountNumber("1000000012").build()));
 
         //when
         AccountException exception =  assertThrows(AccountException.class,
@@ -175,11 +167,7 @@ class TransactionServiceTest {
                         .accountUser(pobi)
                         .balance(100L)
                         .accountStatus(AccountStatus.UNREGISTERED)
-                        .accountNumber(
-                                AccountNumber.builder()
-                                        .accountNumber("1000000012")
-                                        .build()
-                        ).build()));
+                        .accountNumber("1000000012").build()));
 
         //when
         AccountException exception =  assertThrows(AccountException.class,
@@ -200,9 +188,7 @@ class TransactionServiceTest {
                 .accountUser(pobi)
                 .accountStatus(AccountStatus.IN_USE)
                 .balance(100L)
-                .accountNumber(AccountNumber.builder()
-                        .accountNumber("1000000000")
-                        .build()).build();
+                .accountNumber("1000000000").build();
 
         given(accountUserRepository.findById(anyLong()))
                 .willReturn(Optional.of(pobi));
@@ -229,9 +215,7 @@ class TransactionServiceTest {
                 .accountUser(pobi)
                 .accountStatus(AccountStatus.IN_USE)
                 .balance(10000L)
-                .accountNumber(AccountNumber.builder()
-                        .accountNumber("1000000000")
-                        .build()).build();
+                .accountNumber("1000000000").build();
 
         given(accountRepository.findByAccountNumber(anyString()))
                 .willReturn(Optional.of(a));
@@ -268,9 +252,7 @@ class TransactionServiceTest {
                 .accountUser(pobi)
                 .accountStatus(AccountStatus.IN_USE)
                 .balance(10000L)
-                .accountNumber(AccountNumber.builder()
-                        .accountNumber("1000000000")
-                        .build()).build();
+                .accountNumber("1000000000").build();
         Transaction transaction = Transaction.builder()
                 .account(a)
                 .transactionType(USE)
@@ -366,21 +348,13 @@ class TransactionServiceTest {
                 .accountUser(pobi)
                 .accountStatus(AccountStatus.IN_USE)
                 .balance(10000L)
-                .accountNumber(
-                        AccountNumber.builder()
-                                .accountNumber("1000000000")
-                                .build()
-                ).build();
+                .accountNumber("1000000000").build();
         a.setId(1L);
         Account b = Account.builder()
                 .accountUser(pobi)
                 .accountStatus(AccountStatus.IN_USE)
                 .balance(10000L)
-                .accountNumber(
-                        AccountNumber.builder()
-                                .accountNumber("1000000001")
-                                .build()
-                ).build();
+                .accountNumber("1000000001").build();
         b.setId(2L);
         Transaction transaction = Transaction.builder()
                 .account(a)
@@ -421,9 +395,7 @@ class TransactionServiceTest {
                 .accountUser(pobi)
                 .accountStatus(AccountStatus.IN_USE)
                 .balance(10000L)
-                .accountNumber(AccountNumber.builder()
-                        .accountNumber("1000000000")
-                        .build()).build();
+                .accountNumber("1000000000").build();
         a.setId(1L);
         Transaction transaction = Transaction.builder()
                 .account(a)
@@ -463,9 +435,7 @@ class TransactionServiceTest {
                 .accountUser(pobi)
                 .accountStatus(AccountStatus.IN_USE)
                 .balance(10000L)
-                .accountNumber(AccountNumber.builder()
-                        .accountNumber("1000000000")
-                        .build()).build();
+                .accountNumber("1000000000").build();
         a.setId(1L);
         Transaction transaction = Transaction.builder()
                 .account(a)
@@ -505,9 +475,7 @@ class TransactionServiceTest {
                 .accountUser(pobi)
                 .accountStatus(AccountStatus.IN_USE)
                 .balance(10000L)
-                .accountNumber(AccountNumber.builder()
-                        .accountNumber("1000000000")
-                        .build()).build();
+                .accountNumber("1000000000").build();
         a.setId(1L);
         Transaction transaction = Transaction.builder()
                 .account(a)

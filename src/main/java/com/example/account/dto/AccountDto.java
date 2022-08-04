@@ -1,10 +1,8 @@
 package com.example.account.dto;
 
 import com.example.account.domain.Account;
-import com.example.account.domain.AccountNumber;
 import com.example.account.type.AccountType;
 import lombok.*;
-import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
@@ -15,7 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 public class AccountDto {
  private Long userId;
- private AccountNumber accountNumber;
+ private String accountNumber;
  private Long balance;
  private AccountType accountType;
 

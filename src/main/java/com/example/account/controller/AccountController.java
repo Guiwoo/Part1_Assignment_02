@@ -46,7 +46,7 @@ public class AccountController {
     ){
         return accountService.getAccountByUserId(userId)
                 .stream().map(accountDto -> AccountInfo.builder()
-                        .accountNumber(accountDto.getAccountNumber().getAccountNumber())
+                        .accountNumber(accountDto.getAccountNumber())
                         .balance(accountDto.getBalance())
                         .build())
                 .collect(Collectors.toList());

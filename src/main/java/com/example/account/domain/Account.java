@@ -20,9 +20,7 @@ public class Account extends BaseEntity {
     @ManyToOne
     private AccountUser accountUser;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_number_id")
-    private AccountNumber accountNumber;
+    private String accountNumber;
 
     @Enumerated(EnumType.STRING)
     private AccountType accountType;

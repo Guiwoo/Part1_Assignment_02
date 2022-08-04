@@ -49,9 +49,7 @@ class AccountControllerTest {
                 .willReturn(AccountDto.builder()
                         .userId(1L)
                         .accountType(AccountType.CHECKING)
-                        .accountNumber(AccountNumber.builder()
-                                .accountNumber("123456789")
-                                .build())
+                        .accountNumber("123456789")
                         .registeredAt(LocalDateTime.now())
                         .unRegisteredAt(LocalDateTime.now())
                         .build());
@@ -67,7 +65,7 @@ class AccountControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.accountType").value("CHECKING"))
                 .andExpect(jsonPath("$.userId").value(1))
-                .andExpect(jsonPath("$.accountNumber.accountNumber").value("123456789"))
+                .andExpect(jsonPath("$.accountNumber").value("123456789"))
                 .andDo(print());
     }
     @Test
@@ -77,9 +75,7 @@ class AccountControllerTest {
         given(accountService.deleteAccount(anyLong(),anyString()))
                 .willReturn(AccountDto.builder()
                         .userId(1L)
-                        .accountNumber(AccountNumber.builder()
-                                .accountNumber("123456789")
-                                .build())
+                        .accountNumber("123456789")
                         .registeredAt(LocalDateTime.now())
                         .unRegisteredAt(LocalDateTime.now())
                         .build());
@@ -94,7 +90,7 @@ class AccountControllerTest {
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.userId").value(1))
-                .andExpect(jsonPath("$.accountNumber.accountNumber").value("123456789"))
+                .andExpect(jsonPath("$.accountNumber").value("123456789"))
                 .andDo(print());
     }
 
@@ -104,25 +100,15 @@ class AccountControllerTest {
         //given
         List<AccountDto> accountDtos = Arrays.asList(
                 AccountDto.builder()
-                        .accountNumber(
-                                AccountNumber.builder()
-                                        .accountNumber("123456789")
-                                        .build()
-                        )
+                        .accountNumber("123456789")
                         .balance(1000L)
                         .build(),
                 AccountDto.builder()
-                        .accountNumber(
-                                AccountNumber.builder()
-                                        .accountNumber("1111111111")
-                                        .build()
-                        )
+                        .accountNumber("1111111111")
                         .balance(1000L)
                         .build(),
                 AccountDto.builder()
-                        .accountNumber(AccountNumber.builder()
-                                .accountNumber("2222222222")
-                                .build())
+                        .accountNumber("2222222222")
                         .balance(1000L)
                         .build()
         );

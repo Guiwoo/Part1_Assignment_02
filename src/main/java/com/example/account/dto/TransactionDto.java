@@ -24,7 +24,7 @@ public class TransactionDto {
 
     public static TransactionDto fromEntity(Transaction transaction){
         return TransactionDto.builder()
-                .accountNumber(transaction.getAccount().getAccountNumber().getAccountNumber())
+                .accountNumber(transaction.getAccount().getAccountNumber())
                 .transactionType(transaction.getTransactionType())
                 .transactionResultType(transaction.getTransactionResultType())
                 .amount(transaction.getAmount())
